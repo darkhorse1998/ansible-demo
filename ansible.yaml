@@ -19,7 +19,4 @@
         ansible.builtin.debug:
           msg: 'I caught an error, can do stuff here to fix it, :-)'
         # shell: terraform destroy
-        tasks:
-          - name: Destroying TF
-            shell: terraform destroy
           
