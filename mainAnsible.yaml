@@ -51,8 +51,8 @@
             src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
             dest: /etc
             remote_src: True
-        - name: aws-cli installation
-          command: /etc/aws/install
+        # - name: aws-cli installation
+            command: /etc/aws/install
         #   shell: |
         #     curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip
         #     unzip awscliv2.zip
