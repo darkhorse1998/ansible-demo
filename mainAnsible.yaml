@@ -15,19 +15,18 @@
         - name: Getting Kubectl
           get_url:
             url: https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl
-            dest: /
-        - name: Installing Kubectl
+            dest: /etc
+        - name: Setting Executable Kubectl
           shell: |
-            chmod +x ./kubectl
-            mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+            chmod +x /etc/kubectl
           register: kubectInstallationLog
         - debug:
             var: kubectInstallationLog.stdout_lines
-        # - name: Executable Kubectl
-        #   shell: 'chmod +x ./kubectl'
-        #   register: kubectlExecutableInstallationLog
-        # - debug:
-        #     var: kubectlExecutableInstallationLog.stdout_lines
+        - name: Setting Kubectl Path
+          ansible.builtin.copy:
+            src: /etc/kubectl
+            dest: /bin/kubectl
+            mode: 0755
         # - name: Setting Path Kubectl
         #   shell: 'mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin'
         #   register: kubectlSettingPathInstallationLog
@@ -36,8 +35,8 @@
         #Terraform
         - name: Installing Terraform
           shell: |
-            sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-            sudo yum -y install terraform
+            yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+            yum -y install terraform
           register: terraformInstallationLog
         - debug:
             var: terraformInstallationLog.stdout_lines
@@ -75,4 +74,3 @@
         #   register: awsCliInstallationLog
         # - debug:
         #     var: awsCliInstallationLog.stdout_lines
-        
