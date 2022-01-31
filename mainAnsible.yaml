@@ -10,7 +10,7 @@
           shell: 'amazon-linux-extras install docker -y'
           register: dockerInstallationLog
         - debug:
-            var: dockerInstallationLog.stdout_lines
+            var: dockerInstallationLog.stderr_lines
         #Kubectl
         - name: Getting Kubectl
           get_url:
@@ -21,7 +21,7 @@
             chmod +x /etc/kubectl
           register: kubectInstallationLog
         - debug:
-            var: kubectInstallationLog.stdout_lines
+            var: kubectInstallationLog.stderr_lines
         - name: Setting Kubectl Path
           ansible.builtin.copy:
             src: /etc/kubectl
@@ -39,23 +39,26 @@
             yum -y install terraform
           register: terraformInstallationLog
         - debug:
-            var: terraformInstallationLog.stdout_lines
+            var: terraformInstallationLog.stderr_lines
         # - name: Installing Terraform
         #   shell: 'sudo yum -y install terraform'
         #   register: terraformInstallationLog
         # - debug:
         #     var: terraformInstallationLog.stdout_lines
         #Helm
-        - name: Installing Helm
-          shell: |
-            wget https://get.helm.sh/helm-v3.4.1-linux-amd64.tar.gz
-            tar xvf helm-v3.4.1-linux-amd64.tar.gz
-            sudo mv linux-amd64/helm /usr/local/bin
-            rm helm-v3.4.1-linux-amd64.tar.gz
-            rm -rf linux-amd64
+        - name: Getting Helm
+          unarchive:
+            src: https://get.helm.sh/helm-v3.4.1-linux-amd64.tar.gz
+            dest: /etc
+            remote_src: True
           register: helmInstallationLog
         - debug:
-            var: helmInstallationLog.stdout_lines
+            var: helmInstallationLog.stderr_lines
+        - name: Setting Helm to path
+          ansible.builtin.copy:
+            src: /etc/linux-amd64/helm
+            dest: /bin/helm
+        mode: 0755
         # - name: Unzipping Helm
         #   shell: |
         #     tar xvf helm-v3.4.1-linux-amd64.tar.gz
