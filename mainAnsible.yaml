@@ -58,7 +58,7 @@
           ansible.builtin.copy:
             src: /etc/linux-amd64/helm
             dest: /bin/helm
-        mode: 0755
+            mode: 0755
         # - name: Unzipping Helm
         #   shell: |
         #     tar xvf helm-v3.4.1-linux-amd64.tar.gz
