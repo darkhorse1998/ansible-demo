@@ -20,6 +20,7 @@
           shell: |
             chmod +x /etc/kubectl
           register: kubectInstallationLog
+          warn: false
         - debug:
             var: kubectInstallationLog.stderr_lines
         - name: Setting Kubectl Path
