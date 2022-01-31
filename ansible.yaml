@@ -6,6 +6,9 @@
     block:
       - name: Print a message
         shell: 'git --version'
+        register: gitVersion
+      - debug:
+        var: gitVersion.stdout_lines
       - name: Print a message
         ansible.builtin.debug:
           msg: 'I execute normally'
