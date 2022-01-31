@@ -19,4 +19,4 @@
         ansible.builtin.debug:
           msg: 'I caught an error, can do stuff here to fix it, :-)'
         # shell: terraform destroy
-        command: echo "This is a message"
+          command: echo "This is a message"
