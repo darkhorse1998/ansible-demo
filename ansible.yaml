@@ -2,29 +2,30 @@
 - name: run demo task on ansible blocks
   hosts: localhost
   tasks:
-  - name: Handle the error
-    block:
-      - name: Print a message
-        shell: 'git --version'
-        register: gitVersion
-      - debug:
+    - name: Handle the error
+      block:
+        - name: Print a message
+          shell: 'git --version'
+          register: gitVersion
+        
+        - name: Print a message
+          ansible.builtin.debug:
+            msg: 'I execute normally'
+
+        - name: Force a failure
+          ansible.builtin.command: /bin/false
+
+        - name: Never print this
+          ansible.builtin.debug:
+            msg: 'I never execute, due to the above task failing, :-('
+      rescue:
+        # - name: Print version
+        #   # shell: 'terraform version'
+        #   ansible.builtin.command: terraform version
+        - name: Print when errors
+          ansible.builtin.debug:
+            msg: 'I caught an error, can do stuff here to fix it, :-)'
+          # shell: terraform destroy
+    - debug:
         var: gitVersion.stdout_lines
-      - name: Print a message
-        ansible.builtin.debug:
-          msg: 'I execute normally'
-
-      - name: Force a failure
-        ansible.builtin.command: /bin/false
-
-      - name: Never print this
-        ansible.builtin.debug:
-          msg: 'I never execute, due to the above task failing, :-('
-    rescue:
-      # - name: Print version
-      #   # shell: 'terraform version'
-      #   ansible.builtin.command: terraform version
-      - name: Print when errors
-        ansible.builtin.debug:
-          msg: 'I caught an error, can do stuff here to fix it, :-)'
-        # shell: terraform destroy
           
