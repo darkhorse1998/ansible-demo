@@ -1,6 +1,7 @@
 ---
 - name: run demo task on ansible blocks
   hosts: localhost
+  become: true
   tasks:
     - name: Installing Dependencies...
       block:
