@@ -27,12 +27,6 @@
             src: /etc/kubectl
             dest: /bin/kubectl
             mode: 0755
-        # - name: Setting Path Kubectl
-        #   shell: 'mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin'
-        #   register: kubectlSettingPathInstallationLog
-        # - debug:
-        #     var: kubectlSettingPathInstallationLog.stdout_lines
-        #Terraform
         - name: Installing Terraform
           shell: |
             yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
@@ -40,36 +34,25 @@
           register: terraformInstallationLog
         - debug:
             var: terraformInstallationLog.stderr_lines
-        # - name: Installing Terraform
-        #   shell: 'sudo yum -y install terraform'
-        #   register: terraformInstallationLog
-        # - debug:
-        #     var: terraformInstallationLog.stdout_lines
         #Helm
         - name: Getting Helm
           unarchive:
             src: https://get.helm.sh/helm-v3.4.1-linux-amd64.tar.gz
             dest: /etc
             remote_src: True
-          register: helmInstallationLog
-        - debug:
-            var: helmInstallationLog.stderr_lines
         - name: Setting Helm to path
           ansible.builtin.copy:
             src: /etc/linux-amd64/helm
             dest: /bin/helm
             mode: 0755
-        # - name: Unzipping Helm
-        #   shell: |
-        #     tar xvf helm-v3.4.1-linux-amd64.tar.gz
-        #     sudo mv linux-amd64/helm /usr/local/bin
-        #     rm helm-v3.4.1-linux-amd64.tar.gz
-        #     rm -rf linux-amd64
-        #   register: helmUnzippingLog
-        # - debug:
-        #     var: helmUnzippingLog.stdout_lines
         #AWS CLI
-        # - name: Installing AWS CLI
+        - name: Installing AWS CLI
+          unarchive:
+            src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+            dest: /etc
+            remote_src: True
+        - name: aws-cli installation
+          command: /etc/aws/install
         #   shell: |
         #     curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip
         #     unzip awscliv2.zip
