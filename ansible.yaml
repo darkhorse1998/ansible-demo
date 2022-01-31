@@ -16,7 +16,7 @@
           msg: 'I never execute, due to the above task failing, :-('
     rescue:
       - name: Print when errors
-        shell: terraform version
+        shell: 'terraform version'
         # ansible.builtin.shell:
         #   cmd: terraform version
       - name: Print when errors
