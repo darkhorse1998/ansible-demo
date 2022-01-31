@@ -4,8 +4,10 @@
   tasks:
     - name: Handle the error
       block:
-        - name: Print a message
-          shell: 'git --version'
+        - name: Find GIT Version
+          shell: |
+            git --version
+            git --version
           register: gitVersion
         
         - name: Print a message
