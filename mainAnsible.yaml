@@ -4,49 +4,72 @@
   tasks:
     - name: Installing Dependencies...
       block:
+        #Docker
         - name: Installing Docker
           shell: 'amazon-linux-extras install docker -y'
           register: dockerInstallationLog
         - debug:
             var: dockerInstallationLog.stdout_lines
-        - name: Getting Kubectl
-          shell: 'curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl'
-          register: kubectGettinglInstallationLog
+        #Kubectl
+        - name: Installing Kubectl
+          shell: |
+            curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+          register: kubectInstallationLog
         - debug:
-            var: kubectlGettingInstallationLog.stdout_lines
-        - name: Executable Kubectl
-          shell: 'chmod +x ./kubectl'
-          register: kubectlExecutableInstallationLog
-        - debug:
-            var: kubectlExecutableInstallationLog.stdout_lines
-        - name: Setting Path Kubectl
-          shell: 'mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin'
-          register: kubectlSettingPathInstallationLog
-        - debug:
-            var: kubectlSettingPathInstallationLog.stdout_lines
-        - name: Adding Repo Terraform
-          shell: 'sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo'
-          register: terraformGettingLog
-        - debug:
-            var: terraformGettingLog.stdout_lines
+            var: kubectInstallationLog.stdout_lines
+        # - name: Executable Kubectl
+        #   shell: 'chmod +x ./kubectl'
+        #   register: kubectlExecutableInstallationLog
+        # - debug:
+        #     var: kubectlExecutableInstallationLog.stdout_lines
+        # - name: Setting Path Kubectl
+        #   shell: 'mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin'
+        #   register: kubectlSettingPathInstallationLog
+        # - debug:
+        #     var: kubectlSettingPathInstallationLog.stdout_lines
+        #Terraform
         - name: Installing Terraform
-          shell: 'sudo yum -y install terraform'
+          shell: |
+            sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+            sudo yum -y install terraform
           register: terraformInstallationLog
         - debug:
             var: terraformInstallationLog.stdout_lines
-        - name: Getting Helm
-          shell: 'wget https://get.helm.sh/helm-v3.4.1-linux-amd64.tar.gz'
-          register: helmGettingLog
-        - debug:
-            var: helmGettingLog.stdout_lines
-        - name: Unzipping Helm
+        # - name: Installing Terraform
+        #   shell: 'sudo yum -y install terraform'
+        #   register: terraformInstallationLog
+        # - debug:
+        #     var: terraformInstallationLog.stdout_lines
+        #Helm
+        - name: Installing Helm
           shell: |
+            wget https://get.helm.sh/helm-v3.4.1-linux-amd64.tar.gz
             tar xvf helm-v3.4.1-linux-amd64.tar.gz
             sudo mv linux-amd64/helm /usr/local/bin
             rm helm-v3.4.1-linux-amd64.tar.gz
             rm -rf linux-amd64
-          register: helmUnzippingLog
+          register: helmInstallationLog
         - debug:
-            var: helmUnzippingLog.stdout_lines
+            var: helmInstallationLog.stdout_lines
+        # - name: Unzipping Helm
+        #   shell: |
+        #     tar xvf helm-v3.4.1-linux-amd64.tar.gz
+        #     sudo mv linux-amd64/helm /usr/local/bin
+        #     rm helm-v3.4.1-linux-amd64.tar.gz
+        #     rm -rf linux-amd64
+        #   register: helmUnzippingLog
+        # - debug:
+        #     var: helmUnzippingLog.stdout_lines
+        #AWS CLI
+        - name: Installing AWS CLI
+          shell: |
+            curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip
+            unzip awscliv2.zip
+            sudo ./aws/install
+          register: awsCliInstallationLog
+        - debug:
+            var: awsCliInstallationLog.stdout_lines
         
         
