@@ -5,6 +5,8 @@
   - name: Handle the error
     block:
       - name: Print a message
+        shell: 'git --version'
+      - name: Print a message
         ansible.builtin.debug:
           msg: 'I execute normally'
 
@@ -15,9 +17,9 @@
         ansible.builtin.debug:
           msg: 'I never execute, due to the above task failing, :-('
     rescue:
-      - name: Print version
-        # shell: 'terraform version'
-        ansible.builtin.command: terraform version
+      # - name: Print version
+      #   # shell: 'terraform version'
+      #   ansible.builtin.command: terraform version
       - name: Print when errors
         ansible.builtin.debug:
           msg: 'I caught an error, can do stuff here to fix it, :-)'
