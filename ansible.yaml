@@ -19,8 +19,8 @@
         ansible.builtin.shell:
           cmd: ls -l
           register: output
-          debug:
-            output.stdout_lines
+      - debug:
+          var: output.stdout_lines
       - name: Print when errors
         ansible.builtin.debug:
           msg: 'I caught an error, can do stuff here to fix it, :-)'
