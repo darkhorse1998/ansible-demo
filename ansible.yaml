@@ -1,6 +1,6 @@
 ---
 - name: run demo task on ansible blocks
-  hosts: all
+  hosts: localhost
   tasks:
   - name: Handle the error
     block:
